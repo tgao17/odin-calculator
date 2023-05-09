@@ -56,7 +56,7 @@ for (let i = 0; i < btns.length; i++) {
   // have a second reading mode toggled to false initially
   // if operations if clicked, reading mode will be turned on and we will store the operation type
   btns[i].addEventListener('mouseover', () => {
-    if (btns[i].id !== 'displayed'){
+    if (btns[i].id !== 'displayed' && btns[i].id !== 'blank' ){
       btns[i].classList.add('btnHover');
     }
   });
@@ -66,7 +66,7 @@ for (let i = 0; i < btns.length; i++) {
   });
 
   btns[i].addEventListener('click', ()=>{
-    if (currentNumber === '0'){
+    if (currentNumber === '0' && btns[i].id !== 'displayed' && btns[i].id !== 'blank'  ){
       currentNumber = ''
     }
 
