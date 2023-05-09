@@ -1,0 +1,83 @@
+:root {
+  --gap: 6px;
+}
+
+.frame {
+  background-color: rgb(242, 240, 238);
+  height: 800px;
+  width: 550px;
+  margin: 0 auto;
+  margin-top: 200px;
+  display: flex;
+}
+.calculator {
+  margin: 20px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap);
+}
+
+.row {
+  /* border: 3px solid rgb(0, 0, 0) ; */
+  display: flex;
+  /* background-color: white; */
+  flex: 1;
+  box-sizing: border-box;
+  gap: var(--gap);
+}
+
+.btn {
+  border: 3px solid rgb(230, 222, 198) ;
+  background-color: white;
+  display: flex;
+  flex: 1;
+  box-sizing: border-box;
+  justify-content: center;
+  align-items: center;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-size: 18pt;
+}
+
+#display {
+  flex: 1.5
+}
+
+.btn#displayed {
+  justify-content: right;
+  padding-right: 30px;
+  font-size: 50px;
+}
+
+#seven {
+  /* color: aqua; */
+  flex: 1
+}
+#plus {
+  background-color: rgb(255, 180, 122);
+}
+
+#minus {
+  background-color: rgb(255, 180, 122);
+}
+
+#multiply {
+  background-color: rgb(252, 200, 98);
+}
+
+#divide {
+  background-color: rgb(252, 200, 98);
+}
+
+#enter {
+
+}
+
+.btnHover {
+  border: 3px solid rgb(222, 191, 98) ;
+  background-color: rgb(248, 248, 248);
+}
+
+.btnSelected {
+  border: 3px solid rgb(247, 99, 99) ;
+}
