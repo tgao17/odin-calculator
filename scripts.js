@@ -2,22 +2,51 @@
 let btns = document.getElementsByClassName('btn');
 const displayed = document.getElementById('displayed')
 
+function add(first, second){
+  return first + second;
+}
+
+function minus(first, second){
+  return first - second;
+}
+
+function multiply(first, second){
+  return first * second;
+}
+
+function divide(first,second){
+  return first/second;
+}
+
 function assignValue(strValue){
   //assigns a value to either current or second number based on isSecondReading state;
-  console.log(strValue);
-  if (isSecondReading){
+  if (isCalculated && isSecondReading){
+    console.log('second: ' + strValue);
     secondNumber += strValue;
-  } else {
+  } else if (isCalculated){
+    reset();
+    console.log('reset')
+    currentNumber = '';
     currentNumber+= strValue;
+  } else if (isSecondReading){
+    console.log('second: ' + strValue);
+    secondNumber += strValue;
+  } else { // we hsould only see this case ONCE
+    currentNumber+= strValue;
+    console.log('current: '+strValue);
   }
 }
 
 function assignOperation(element, strValue){
-  if (isSecondReading === false){
+  if (currentNumber === ''){
+    currentNumber = '0';
+    return 'no values added yet';
+  } else if (isSecondReading === false){
     console.log(strValue)
     element.classList.add('btnSelected')
     isSecondReading = true;
     operationType = strValue;
+    // console.log('isSecondReading now true');
   } else {
     console.log('one operator only')
   }
@@ -27,7 +56,9 @@ for (let i = 0; i < btns.length; i++) {
   // have a second reading mode toggled to false initially
   // if operations if clicked, reading mode will be turned on and we will store the operation type
   btns[i].addEventListener('mouseover', () => {
-    btns[i].classList.add('btnHover');
+    if (btns[i].id !== 'displayed'){
+      btns[i].classList.add('btnHover');
+    }
   });
 
   btns[i].addEventListener('mouseout', () => {
@@ -91,13 +122,61 @@ for (let i = 0; i < btns.length; i++) {
     }
 
     //operate
-    if (btns[i].id === 'enter'){
-      console.log('entered')
+    if (isSecondReading && btns[i].id === 'enter'){
+      console.log('operate')
+      //wipe operation's btnSelected state
+      for (let j = 0 ; j<btns.length; j++){
+        btns[j].classList.remove('btnSelected');
+      }
+      //execute operation
+      let a = parseInt(currentNumber);
+      let b = parseInt(secondNumber);
+      if (operationType === 'plus'){
+        currentNumber = add(a,b).toString();
+      } else if (operationType === 'minus'){
+        currentNumber = minus(a,b).toString();
+      } else if (operationType === 'multiply'){
+        currentNumber = multiply(a,b).toString();
+      } else {
+        currentNumber = divide(a,b).toString();
+      }
+      secondNumber = '';
       isSecondReading = false;
-      operationType = ''
+      console.log('answer: '+currentNumber)
+      // console.log('isSecondReading now false');
+      isCalculated = true;
     }
 
-    //shifts displayed mode
+    //clear
+    if (btns[i].id === 'clear'){
+      for (let j = 0 ; j<btns.length; j++){
+        btns[j].classList.remove('btnSelected');
+      }
+      reset();
+      currentNumber = '0';
+    }
+
+    //delete
+    if (btns[i].id === 'delete'){
+      if (isSecondReading){
+        if (secondNumber === '0'){
+          secondNumber = '0'
+        } else if (secondNumber.length === 1){
+          secondNumber = '0'
+        } else {
+          secondNumber = secondNumber.slice(0,secondNumber.length - 1);
+        }
+      } else {
+        if (currentNumber === '0'){
+          currentNumber = '0'
+        } else if (currentNumber.length === 1){
+          currentNumber = '0'
+        } else {
+          currentNumber = currentNumber.slice(0,currentNumber.length - 1);
+        }
+      }
+    }
+    //shifts displayed mode when new number is pressed for second reading
     if (isSecondReading && secondNumber !== ''){
       displayed.textContent = secondNumber;
     } else {
@@ -105,6 +184,7 @@ for (let i = 0; i < btns.length; i++) {
     }
 
   });
+
 }
 
 
@@ -113,13 +193,14 @@ for (let i = 0; i < btns.length; i++) {
 // displayed.appendChild(displayedContent);
 
 
-function resetCurrent() {
-  currentNumber = '';
+function reset() {
+  isSecondReading = false;
+  secondNumber = '';
+  operationType = '';
+  isCalculated = false;
 }
 
-let isSecondReading = false;
-let currentNumber = '0';
-let secondNumber = ''
-let operationType = ''
+reset();
+currentNumber = '0';
 
 displayed.textContent = currentNumber;
